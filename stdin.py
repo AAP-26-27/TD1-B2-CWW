@@ -4,9 +4,17 @@
 - Ce programme ne devra afficher sur la sortie standard *que* le nombre de caractères saisi. 
 - Une fois le programme ci-dessous mis au point, poussez votre travail sur votre dépôt git et appelez l'enseignant avant de passer à l'exercice suivant."""
 
+import sys
 
 def comptage():
-    return 0 
+    if sys.stdin.isatty():
+        # Mode interactif : on invite l'utilisateur à entrer une chaîne
+        texte = input("Veuillez saisir une chaîne : ")
+    else:
+        # Mode non-interactif (pipe | ou redirection <) : lecture directe du flux sans message
+        texte = sys.stdin.read()
+
+    return len(texte)
     
 if __name__ == "__main__":
     print(comptage())

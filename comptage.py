@@ -8,17 +8,51 @@
 - Votre programme devra proposer un mode de débogage affichant les numéros des mots détectés. 
 - Une fois le programme mis au point, poussez votre travail sur votre dépôt git et appelez l'enseignant avant de passer à l'exercice suivant."""
 
+#!/usr/bin/env python3
+"""Programme permettant de lire un fichier et d'afficher ses caractéristiques principales."""
+
+import os
+import sys
+
 
 def lire():
-    # récupération des arguments et sélection du flux
-    # parcours du flux
-    # comptage
-    # affichage 
-    return ""
+  # 1. Récupération des arguments et sélection du flux
+  if len(sys.argv) > 1:
+    fichier = open(sys.argv[1], "r")
+    texte = fichier.read()
+    fichier.close()
+  else:
+    texte = sys.stdin.read()
 
+  # 2. Parcours du flux
+  nb_caracteres = 0
+  nb_lignes = 0
+  nb_mots = 0
+  dans_un_mot = False
+  debug = "DEBUG" in os.environ
 
-    
-    
+  for c in texte:
+    nb_caracteres += 1
+
+    match c:
+      case "\n":
+        nb_lignes += 1
+        dans_un_mot = False
+
+      case " " | "\t":
+        dans_un_mot = False
+
+      case _:
+        # Dès qu'on touche un caractère normal alors qu'on n'était pas dans un mot
+        if not dans_un_mot:
+          nb_mots += 1
+          dans_un_mot = True
+          if debug:
+            print(f"Mot numéro {nb_mots}", file=sys.stderr)
+
+  # Affichage au format wc : lignes, mots, caractères
+  print(f"{nb_lignes}\t{nb_mots}\t{nb_caracteres}")
+
 
 
 if __name__ == "__main__":
